@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Preload critical fonts/images to guarantee fast LCP -->
+    <link rel="preload" href="hero-bg.jpg" as="image">
+    <title>Elite Roofing & Repair | Fast, Reliable Service</title>
+    <meta name="description" content="Top-rated roofing contractors in your area. Fast response, free estimates, and guaranteed work.">
+    
+    <style>
+        /* Inlined Critical CSS for instant painting */
+        :root { --primary: #003366; --accent: #ff6600; --text: #333; }
+        body { font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 0; color: var(--text); line-height: 1.6; }
+        .hero { background: linear-gradient(rgba(0,51,102,0.8), rgba(0,51,102,0.8)), url('hero-bg.jpg') center/cover; color: white; padding: 100px 20px; text-align: center; }
+        .hero h1 { font-size: 3rem; margin-bottom: 10px; }
+        .cta-btn { display: inline-block; background: var(--accent); color: white; padding: 15px 30px; text-decoration: none; font-weight: bold; border-radius: 5px; margin-top: 20px; transition: transform 0.2s; }
+        .cta-btn:hover { transform: scale(1.05); }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 50px 20px; max-width: 1200px; margin: 0 auto; }
+        .card { background: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; }
+        footer { background: #222; color: white; text-align: center; padding: 20px; }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <h1>Stop Leaks Before They Start</h1>
+        <p>Voted #1 Local Contractor | 24/7 Emergency Service</p>
+        <a href="tel:+1234567890" class="cta-btn">Call Now for a Free Estimate</a>
+    </header>
+
+    <main class="features">
+        <div class="card">
+            <h2>Expert Installation</h2>
+            <p>Decades of experience ensuring your roof lasts a lifetime.</p>
+        </div>
+        <div class="card">
+            <h2>Storm Repair</h2>
+            <p>Fast, reliable patch work and full replacements after severe weather.</p>
+        </div>
+        <div class="card">
+            <h2>5-Star Reviews</h2>
+            <p>Our reputation is built on trust and absolute transparency.</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Elite Roofing. All Rights Reserved. | Designed for Speed.</p>
+    </footer>
+
+</body>
+</html>
