@@ -2,27 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- This is the Master Switch for mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Data Command</title>
-    <style>
-        /* Mobile-First, High-Performance CSS */
-        :root { --bg: #f4f4f9; --surface: #ffffff; --primary: #003366; --text: #333; --border: #ddd; }
-        body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
-        .header { background: var(--primary); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-        .header h1 { margin: 0; font-size: 1.5rem; }
-        
-        /* The Control Panel (Search & Filter) */
-        .controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .controls input, .controls select { padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; flex-grow: 1; min-width: 200px; }
-        
-        /* The Data Grid */
-        .table-container { overflow-x: auto; background: var(--surface); border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: #f8f9fa; font-weight: 600; }
-        .status-hot { color: #d9534f; font-weight: bold; }
-        .status-cold { color: #5bc0de; }
-    </style>
+    <title>Sovereign Business</title>
+    <!-- This links to your new master style file -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -56,71 +40,8 @@
         </table>
     </div>
 
-    <script>
-        // The Sovereign Lightweight Data Parser
-        let globalData = [];
-
-        // 1. Fetch the CSV file automatically
-        fetch('leads_pipeline.csv')
-            .then(response => response.text())
-            .then(text => {
-                // Split by line, ignore empty lines
-                const rows = text.split('\n').filter(row => row.trim() !== '');
-                
-                // Map the pipe-separated data (|) into JavaScript Objects
-                globalData = rows.map(row => {
-                    const cols = row.split('|');
-                    return { 
-                        name: cols[0] || 'N/A', 
-                        url: cols[1] || '#', 
-                        email: cols[2] || '', 
-                        score: cols[3] || '0', 
-                        status: cols[4] || 'Unknown', 
-                        issues: cols[5] || 'None' 
-                    };
-                });
-                renderTable(globalData);
-            })
-            .catch(err => console.error("Could not load data. Ensure leads_pipeline.csv is in the same folder.", err));
-
-        // 2. The Render Engine (Builds the HTML)
-        function renderTable(data) {
-            const tbody = document.getElementById('dataGrid');
-            tbody.innerHTML = ''; // Clear existing
-
-            data.forEach(item => {
-                const statusClass = item.status.includes('Hot') ? 'status-hot' : 'status-cold';
-                const row = `<tr>
-                    <td><strong>${item.name}</strong><br><small><a href="${item.url}" target="_blank">${item.url}</a></small></td>
-                    <td>${item.score}/100</td>
-                    <td class="${statusClass}">${item.status}</td>
-                    <td>${item.issues}</td>
-                    <td><a href="mailto:${item.email}">Email</a></td>
-                </tr>`;
-                tbody.innerHTML += row;
-            });
-        }
-
-        // 3. The Search & Filter Logic
-        function filterData() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const category = document.getElementById('categoryFilter').value;
-
-            const filtered = globalData.filter(item => {
-                const matchesSearch = item.name.toLowerCase().includes(query) || 
-                                      item.url.toLowerCase().includes(query) || 
-                                      item.issues.toLowerCase().includes(query);
-                const matchesCategory = category === 'All' || item.status.includes(category);
-                
-                return matchesSearch && matchesCategory;
-            });
-
-            renderTable(filtered);
-        }
-
-        // 4. Attach Listeners to the UI
-        document.getElementById('searchInput').addEventListener('input', filterData);
-        document.getElementById('categoryFilter').addEventListener('change', filterData);
+    <script src="app.js">
+        
     </script>
 </body>
 </html>

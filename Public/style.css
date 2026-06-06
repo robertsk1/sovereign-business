@@ -1,0 +1,117 @@
+/* =========================================
+   SOVEREIGN MASTER STYLESHEET
+   Mobile-First | High-Performance | Lightweight
+========================================= */
+
+/* 1. CSS VARIABLES (Change your brand colors here) */
+:root {
+    --primary: #0f172a; /* Deep Slate Blue */
+    --accent: #3b82f6;  /* Bright Tech Blue */
+    --bg-light: #f8fafc;
+    --text-main: #334155;
+    --text-light: #64748b;
+    --white: #ffffff;
+    --border: #e2e8f0;
+}
+
+/* 2. UNIVERSAL MOBILE RESET (Pillar 2) */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden; /* Stops horizontal screen-breaking on phones */
+}
+
+img, video {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 3. LAYOUT & CONTAINERS */
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 30px 20px;
+    text-align: center;
+    border-radius: 0 0 8px 8px;
+    margin-bottom: 30px;
+}
+
+/* 4. BUTTONS & INPUTS */
+.btn {
+    display: inline-block;
+    background-color: var(--accent);
+    color: var(--white);
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn:hover { background-color: #2563eb; }
+
+input, select {
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+/* 5. DASHBOARD TABLE STYLES */
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Enables horizontal swipe on phones */
+    -webkit-overflow-scrolling: touch;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Forces table to stay readable, triggers swiping if screen is smaller */
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+th { background-color: #f1f5f9; font-weight: 600; }
+
+/* 6. MOBILE RESPONSIVENESS (Pillar 3) */
+@media (max-width: 768px) {
+    /* Stack elements vertically on phones */
+    .controls, .grid {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Make buttons and inputs full width for easy thumb-tapping */
+    .btn, input, select {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .header h1 { font-size: 1.5rem; }
+}
