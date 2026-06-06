@@ -3,16 +3,22 @@
 # Requirements: sudo apt install jq
 
 TARGET=$1
+if [ -z "$TARGET" ]; then
+	echo "Usage: $0 https://target-url.com"
+	exit 1
+fi
+
 echo "--- Sovereign Audit Report: $TARGET ---"
 
 # Extract Performance Metrics
 API_URL="https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=$TARGET&strategy=mobile"
 DATA=$(curl -s "$API_URL")
 
-LCP=$(echo "$DATA" | jq -r '.loadingExperience.metrics.LARGEST_CONTENTFUL_PAINT_MS.category')
-CLS=$(echo "$DATA" | jq -r '.loadingExperience.metrics.CUMULATIVE_LAYOUT_SHIFT_SCORE.category')
-INP=$(echo "$DATA" | jq -r '.loadingExperience.metrics.INTERACTION_TO_NEXT_PAINT.category')
-SCORE=$(echo "$DATA" | jq '.lighthouseResult.categories.performance.score' | awk '{print int($1*100)}')
+LCP=$(echo "$DATA" | jq -r '.loadingExperience.metrics.LARGEST_CONTENTFUL_PAINT_MS.category // "N/A"')
+CLS=$(echo "$DATA" | jq -r '.loadingExperience.metrics.CUMULATIVE_LAYOUT_SHIFT_SCORE.category // "N/A"')
+INP=$(echo "$DATA" | jq -r '.loadingExperience.metrics.INTERACTION_TO_NEXT_PAINT.category // "N/A"')
+RAW_SCORE=$(echo "$DATA" | jq -r '.lighthouseResult.categories.performance.score // 0')
+SCORE=$(awk -v s="$RAW_SCORE" 'BEGIN{printf "%d", s*100}')
 
 echo "Performance Score: $SCORE/100"
 echo "LCP (Speed): $LCP | CLS (Stability): $CLS | INP (Interactivity): $INP"

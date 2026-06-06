@@ -16,12 +16,14 @@ fi
 echo "[*] Initializing Prospect Analysis for: $NAME"
 
 # 2. THE EXTRACTOR: Fetch score with failure protection
-SCORE=$(curl -s "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=$URL&strategy=mobile" | jq -r '.lighthouseResult.categories.performance.score' | awk '{print int($1*100)}')
+RAW_SCORE=$(curl -s "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=$URL&strategy=mobile" | jq -r '.lighthouseResult.categories.performance.score // 0')
+# Normalize to integer 0-100
+SCORE=$(awk -v s="$RAW_SCORE" 'BEGIN{printf "%d", s*100}')
 
-# If Google's API throttles the request and returns empty, default to 0 to prevent bash math errors
-if [ -z "$SCORE" ] || [ "$SCORE" == "0" ]; then 
+# If the API returned something unexpected, default to 0
+if ! [[ "$SCORE" =~ ^[0-9]+$ ]]; then
     SCORE=0
-    echo "[-] WARNING: PageSpeed API returned null. Defaulting score to 0."
+    echo "[-] WARNING: PageSpeed API returned null or non-numeric. Defaulting score to 0."
 fi
 
 # 3. THE ANALYZER: Check technical health
@@ -38,11 +40,13 @@ ISSUES=$(echo "$ISSUES" | sed 's/, $//')
 [ -z "$ISSUES" ] && ISSUES="None"
 
 # 4. THE CLASSIFIER
+# Higher score -> hotter prospect
 STATUS="Cold"
-if [ "$SCORE" -lt 60 ]; then STATUS="Hot Prospect"; fi
+if [ "$SCORE" -ge 60 ]; then STATUS="Hot Prospect"; fi
 
-# 5. THE INJECTOR: Push data to the public dashboard directory
-echo "$NAME|$URL|$EMAIL|$SCORE|$STATUS|$ISSUES" >> docs/leads_pipeline.csv
+# 5. THE INJECTOR: Push data to the public dashboard directory (served from Public/)
+mkdir -p Public
+echo "$NAME|$URL|$EMAIL|$SCORE|$STATUS|$ISSUES" >> Public/leads_pipeline.csv
 
 echo "[+] Prospect Status: $STATUS"
 echo "[+] Identified Issues: $ISSUES"
